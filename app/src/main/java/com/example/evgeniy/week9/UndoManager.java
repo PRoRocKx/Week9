@@ -13,20 +13,20 @@ import java.util.Set;
 
 import static android.content.SharedPreferences.*;
 
-public class UndoManager {
+class UndoManager {
 
     private static final String TEMP_PREFERENCES = "tempPref";
     private static final String SCOPE_PREFERENCES = "scopePref";
     private static final long SAVE_INTERVAL = 5000;
 
-    private List<View> viewList;
+    private final List<View> viewList;
 
-    private Context context;
+    private final Context context;
 
     private SharedPreferences tempSettings;
     private SharedPreferences scopeSettings;
 
-    private UndoTimer undoTimer;
+    private final UndoTimer undoTimer;
 
     UndoManager(Context context, List<View> viewList) {
         this.context = context;
@@ -124,6 +124,7 @@ public class UndoManager {
         }
         return settings.getString(String.valueOf(i), "-1");
     }
+
     private Set<String> getSettingsSetValue(SharedPreferences settings) {
         int i = -1;
         for (String key : settings.getAll().keySet()) {
@@ -132,14 +133,14 @@ public class UndoManager {
         return settings.getStringSet(String.valueOf(i), null);
     }
 
-    private void undoOne(String s){
+    private void undoOne(String s) {
         String[] strings = s.split(":");
         int id = Integer.valueOf(strings[1]);
         String val = (strings[3]);
         undo(id, val);
     }
 
-    private boolean undoTemp(){
+    private boolean undoTemp() {
         String setting = getSettingsValue(tempSettings);
         if (setting.equals("-1")) {
             return false;
@@ -149,12 +150,12 @@ public class UndoManager {
         return true;
     }
 
-    private boolean undoScope(){
+    private boolean undoScope() {
         Set<String> setting = getSettingsSetValue(scopeSettings);
-        if (setting == null){
+        if (setting == null) {
             return false;
         }
-        for (String s : setting){
+        for (String s : setting) {
             undoOne(s);
         }
         removeLastSettingsValue(scopeSettings);
@@ -163,11 +164,11 @@ public class UndoManager {
 
 
     public boolean undo() {
-        if (undoTemp()){
+        if (undoTemp()) {
             undoTimer.setTimer(SAVE_INTERVAL);
             return true;
         }
-        if (undoScope()){
+        if (undoScope()) {
             undoTimer.setTimer(SAVE_INTERVAL);
             return true;
         }
@@ -239,16 +240,16 @@ public class UndoManager {
     }
 
 
-    private void removeEqualsId(String id, Set<String> settings){
-        for (String sett:settings) {
-            if (sett.split(":")[1].equals(id)){
+    private void removeEqualsId(String id, Set<String> settings) {
+        for (String sett : settings) {
+            if (sett.split(":")[1].equals(id)) {
                 settings.remove(sett);
                 return;
             }
         }
     }
 
-    public void convertTempToScope(){
+    public void convertTempToScope() {
         Set<String> settings = new HashSet<>();
         while (!tempSettings.getAll().isEmpty()) {
             String setting = getSettingsValue(tempSettings);

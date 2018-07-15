@@ -3,17 +3,17 @@ package com.example.evgeniy.week9;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class UndoTimer {
+class UndoTimer {
 
     private final UndoManager undoManager;
 
     private Timer timer;
 
-    UndoTimer(UndoManager undoManager){
+    UndoTimer(UndoManager undoManager) {
         this.undoManager = undoManager;
     }
 
-    public void setTimer(long delay){
+    public void setTimer(long delay) {
         if (timer != null) {
             timer.cancel();
         }
@@ -22,7 +22,7 @@ public class UndoTimer {
         timer.schedule(timerTask, delay);
     }
 
-    public void stopTimer(){
+    public void stopTimer() {
         if (timer != null) {
             timer.cancel();
         }
