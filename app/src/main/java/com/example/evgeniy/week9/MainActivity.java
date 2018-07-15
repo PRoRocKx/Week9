@@ -9,7 +9,6 @@ import java.util.List;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-
 public class MainActivity extends AppCompatActivity {
 
     @BindViews({R.id.seekBar, R.id.radioButton, R.id.radioButton2, R.id.radioButton3, R.id.checkBox, R.id.toggleButton, R.id.switch1})
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!undoManager.undo()){
+        if (!undoManager.undo()) {
             super.onBackPressed();
         }
     }
